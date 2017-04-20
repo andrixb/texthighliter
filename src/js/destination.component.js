@@ -12,18 +12,11 @@
 
         // Initial module configuration
         var _defaultState = {
-            words: []
+            paragraph: []
         };
 
         function _getDeepCloneOfObject(object) {
             return JSON.parse(JSON.stringify(object));
-        }
-
-        function _ensureArray(item) {
-            if (item.constructor !== Array) {
-                item = [item];
-            }
-            return item;
         }
 
         function _setupState(state) {
@@ -34,12 +27,16 @@
             );
         }
 
-        function _addWord(word) {
-            _$.words.push(word);
+        function _createNewParagraph(words) {
+            _$.paragraph.push(words);
+        }
+        
+        function _getParagraphs() {
+            return _$.paragraph;
         }
 
-        function _getWordList() {
-            return _$.words;
+        function _addParagraphs(wordsSet) {
+            _createNewParagraph(wordsSet);
         }
 
         return {
@@ -47,13 +44,12 @@
                 _setupState(initState);
             },
 
-            getWords: _getWordList,
+            getParagraphs: function () {
+                _getParagraphs();
+            },
 
-            addWords: function (newWords) {
-                _ensureArray(newWords).forEach(function (newWord) {
-                    var word = _getDeepCloneOfObject(newWord);
-                    _addWord(word);
-                });
+            addParagraph: function (newWords) {
+                _addParagraphs(newWords);
             },
 
             destroy: function () {

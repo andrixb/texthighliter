@@ -36,4 +36,3 @@ example:
 
 `datalayer.component.js` stays in the middle and is the controller and listens to the events
 `destination.component.js` is a model
-`source.component.js` is a model

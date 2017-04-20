@@ -12,16 +12,8 @@
 
         // Initial module configuration
         var _config = {
-            words: '.words.text-muted'
+            words: '.words'
         };
-
-        function _setInitHighlighting() {
-            _$.highlighting = '';
-        }
-
-        function _setWordsObj() {
-            _$.wordsObj = [];
-        }
 
         function _setInitDestination() {
             var destInitConfig = {};
@@ -30,24 +22,23 @@
         }
 
         function _textHighlight(event) {
-            if (event.target.all) {
-                _$.highlighting += document.selection.createRange().text;
-            } else {
-                _$.highlighting += ' ' + document.getSelection();
-                _$.wordsTag = event.target.querySelectorAll(_config.words);
-                _extractWordData(_$.wordsTag);
-                _config.destination.addWords(_$.wordsObj);
-            }
+            var range = document.getSelection().getRangeAt(0);
+            var content = range.extractContents();
+            var wordsTag = content.querySelectorAll(_config.words);
+            var wordsArrObjs = _extractWordData(wordsTag);
+            _config.destination.addParagraph(wordsArrObjs);
         }
 
         function _extractWordData(element) {
+            var tmpArr = [];
             for (var i = 0; i < element.length; i++) {
-               _$.wordsObj.push({
+               tmpArr.push({
                     'data-start-time': element[i].getAttribute('data-start-time'),
                     'data-text': element[i].getAttribute('data-text'),
                     'data-end-time': element[i].getAttribute('data-end-time')
                 });
             }
+            return tmpArr;
         }
 
         function _addListeners() {
@@ -55,8 +46,6 @@
         }
 
         function _main() {
-            _setInitHighlighting();
-            _setWordsObj();
             _setInitDestination();
             _addListeners();
         }
